@@ -17,4 +17,17 @@ public class AuthService {
     public List<Students> getAllStudents() {
         return authDao.findAll();
     }
+
+    public Students findByEmail(String email) {
+        return authDao.findByEmail(email);
+    }
+
+    public Students findByPhone(String phone) {
+        return authDao.findByPhone(phone);
+    }
+
+    public void saveStudent(Students student) {
+        authDao.save(student);
+    }
+
 }
