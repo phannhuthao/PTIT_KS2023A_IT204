@@ -25,18 +25,14 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String actionLogin(@ModelAttribute("student") Students student,
+    public String actionLogin(@Valid @ModelAttribute("student") Students student,
                               BindingResult result, Model model) {
-        if (student.getEmail().isEmpty() || student.getPassword().isEmpty()) {
-            model.addAttribute("error", "Không được để trống email hoặc mật khẩu.");
+
+        if(result.hasErrors()) {
             return "login";
         }
 
         Students userDb = authService.findByEmail(student.getEmail());
-        if (userDb == null || !userDb.getPassword().equals(student.getPassword())) {
-            model.addAttribute("error", "Tài khoản hoặc mật khẩu không đúng!");
-            return "login";
-        }
 
         if (userDb.isRole()) {
             return "redirect:/admin";
@@ -69,7 +65,7 @@ public class AuthController {
         }
 
         student.setCreate_at(new Date());
-        student.setRole(false); // là Student
+        student.setRole(false);
         authService.saveStudent(student);
 
         model.addAttribute("success", "Đăng ký thành công!");
@@ -87,4 +83,6 @@ public class AuthController {
         model.addAttribute("student", new Students());
         return "home";
     }
+
+
 }
