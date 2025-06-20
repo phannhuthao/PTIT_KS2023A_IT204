@@ -78,7 +78,6 @@
     <div class="form-group">
         <label>Hình ảnh</label>
         <input type="file" name="imageFile">
-        <small th:if="${#fields.hasErrors('image')}" th:errors="*{image}"></small>
     </div>
 
     <div class="error-message" th:if="${error}" th:text="${error}"></div>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Trang Quản Lí Người Dùng</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter&display=swap">
+</head>
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 40px;
+        background-color: #f9f9f9;
+    }
+    h1 {
+        font-size: 28px;
+        font-weight: 600;
+        color: #1f1f1f;
+        margin-bottom: 20px;
+    }
+    .actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    .filters {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    select, input[type="search"] {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        background-color: #fff;
+    }
+    button.search-btn {
+        padding: 8px 16px;
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
+    }
+    .add-btn {
+        padding: 10px 20px;
+        background-color: #3b82f6;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 500;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    th, td {
+        padding: 12px 10px;
+        text-align: center;
+        font-size: 14px;
+        border-bottom: 1px solid #eee;
+    }
+    th {
+        background-color: #fafafa;
+        color: #333;
+        font-weight: 600;
+    }
+    img {
+        width: 60px;
+        border-radius: 4px;
+    }
+    .icon-btn {
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+
+    .edit {
+        color: #f59e0b;
+        font-size: 18px;
+    }
+
+    .delete {
+        color: #ef4444;
+        font-size: 18px;
+    }
+
+    .action-cell {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+    }
+
+    @media (max-width: 768px) {
+        .actions {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+        }
+
+        .filters {
+            flex-direction: column;
+        }
+
+        table {
+            font-size: 12px;
+        }
+    }
+    .sidebar {
+        width: 220px;
+        background-color: #f9f9f9;
+        height: 100vh;
+        padding-top: 20px;
+        border-right: 1px solid #ddd;
+    }
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        color: #333;
+        text-decoration: none;
+        transition: background-color 0.2s;
+    }
+    .sidebar a:hover {
+        background-color: #eaeaea;
+    }
+    .sidebar i {
+        margin-right: 10px;
+    }
+    .layout {
+        display: flex;
+    }
+    .sidebar {
+        width: 220px;
+        background-color: #f9f9f9;
+        height: 100vh;
+        padding-top: 20px;
+        border-right: 1px solid #ddd;
+        flex-shrink: 0;
+        position: sticky;
+        top: 0;
+    }
+    .content {
+        flex: 1;
+        padding: 40px;
+        background-color: #f9f9f9;
+        overflow-x: auto;
+        height: 100vh;
+        box-sizing: border-box;
+    }
+</style>
+<body>
+<div class="layout">
+    <div class="sidebar">
+        <a th:href="@{/admin/dashboard}">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a th:href="@{/admin/students}">
+            <i class="fas fa-users"></i> Students
+        </a>
+        <a th:href="@{/admin/courses}">
+            <i class="fas fa-book-open"></i> Courses
+        </a>
+        <a th:href="@{/admin/enrollments}">
+            <i class="fas fa-user-plus"></i> Enrollments
+        </a>
+    </div>
+
+    <div class="content">
+
+    </div>
+
+</div>
+
+</body>
+</html>

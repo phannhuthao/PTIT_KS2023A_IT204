@@ -1,5 +1,6 @@
 package org.example.ptit_ks2023a_projectit204.ra.edu.controller;
 
+import org.example.ptit_ks2023a_projectit204.ra.edu.dto.FormLogin;
 import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Students;
 import org.example.ptit_ks2023a_projectit204.ra.edu.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.Date;
 
@@ -20,28 +22,32 @@ public class AuthController {
 
     @GetMapping("/login")
     public String showLogin(Model model) {
-        model.addAttribute("student", new Students());
+        model.addAttribute("formLogin", new FormLogin());
         return "login";
     }
 
     @PostMapping("/login")
-    public String actionLogin(@Valid @ModelAttribute("student") Students student,
-                              BindingResult result, Model model) {
-
-        if(result.hasErrors()) {
+    public String actionLogin(@Valid @ModelAttribute("student") FormLogin formLogin,
+                              BindingResult result,
+                              Model model,
+                              HttpSession session) {
+        if (result.hasErrors()) {
+            model.addAttribute("student", formLogin);
             return "login";
         }
 
-        Students userDb = authService.findByEmail(student.getEmail());
+        Students loggedInStudent = authService.login(formLogin.getEmail(), formLogin.getPassword());
 
-        if (userDb.isRole()) {
-            return "redirect:/admin";
-        } else {
-            return "redirect:/home";
+
+        if (loggedInStudent == null) {
+            model.addAttribute("error", "Sai email hoặc mật khẩu");
+            return "login";
         }
 
-    }
+        session.setAttribute("loggedInUser", loggedInStudent);
 
+        return loggedInStudent.isRole() ? "redirect:/admin" : "redirect:/home";
+    }
 
     @GetMapping("/register")
     public String showRegister(Model model) {
@@ -52,15 +58,9 @@ public class AuthController {
     @PostMapping("/register")
     public String actionRegister(@Valid @ModelAttribute("student") Students student,
                                  BindingResult result, Model model) {
-        // Kiểm tra email và phone đã tồn tại chưa
-        if (authService.findByEmail(student.getEmail()) != null) {
-            result.rejectValue("email", "error.email", "Email đã tồn tại!");
-        }
-        if (student.getPhone() != null && authService.findByPhone(student.getPhone()) != null) {
-            result.rejectValue("phone", "error.phone", "Số điện thoại đã tồn tại!");
-        }
 
         if (result.hasErrors()) {
+            model.addAttribute("student", student);
             return "register";
         }
 
@@ -69,7 +69,7 @@ public class AuthController {
         authService.saveStudent(student);
 
         model.addAttribute("success", "Đăng ký thành công!");
-        return "register";
+        return "login";
     }
 
     @GetMapping("/admin")
@@ -83,6 +83,5 @@ public class AuthController {
         model.addAttribute("student", new Students());
         return "home";
     }
-
 
 }

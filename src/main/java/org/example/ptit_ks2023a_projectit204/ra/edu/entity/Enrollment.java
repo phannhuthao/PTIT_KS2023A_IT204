@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.util.Date;
 
 @NoArgsConstructor
@@ -16,8 +18,15 @@ import java.util.Date;
 public class Enrollment {
     @Id
     private int id;
-    private int student_id;
-    private int course_id;
+
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Students student;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private Course course;
+
     private Date registered_at;
     private boolean status;
 }

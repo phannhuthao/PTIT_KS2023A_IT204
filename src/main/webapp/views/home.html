@@ -2,11 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Trang Người Dùng</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
 </head>
 <style>
 
 </style>
 <body>
-<h1>Trang Home</h1>
+<div th:replace="fragments/header :: header"></div>
+
+
 </body>
 </html>

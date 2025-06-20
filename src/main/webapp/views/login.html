@@ -56,17 +56,19 @@
     </style>
 </head>
 <body>
-<form th:action="@{/login}" th:object="${student}" method="post">
+<form th:action="@{/login}" th:object="${formLogin}" method="post">
     <h2>Đăng Nhập</h2>
-    <input type="text" th:field="*{email}" placeholder="Email" />
+
+    <input type="text" th:field="*{email}" placeholder="Email"/>
     <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
 
-    <input type="password" th:field="*{password}" placeholder="Mật khẩu" />
+    <input type="password" th:field="*{password}" placeholder="Mật khẩu"/>
     <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 
     <div th:if="${error != null}" th:text="${error}"></div>
 
     <input type="submit" value="Đăng nhập" />
 </form>
+
 </body>
 </html>

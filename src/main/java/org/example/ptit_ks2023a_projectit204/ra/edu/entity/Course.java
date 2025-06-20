@@ -4,13 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 @Entity
@@ -33,7 +29,9 @@ public class Course {
 
     private Date create_at;
 
-    @NotBlank(message = "Đường dẫn hình ảnh không được để trống")
     private String image;
+
+    @OneToMany(mappedBy = "course")
+    private java.util.List<Enrollment> enrollments;
 }
 

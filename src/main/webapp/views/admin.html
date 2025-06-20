@@ -2,8 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Trang Admin Quản Lí</title>
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter&display=swap">
     <style>
         body {
             margin: 0;
@@ -40,30 +39,40 @@
         .sidebar i {
             margin-right: 10px;
         }
-
-        .content {
-            flex-grow: 1;
-            padding: 20px;
+        .layout {
+            display: flex;
         }
+
+        .sidebar {
+            width: 220px;
+            background-color: #f9f9f9;
+            height: 100vh;
+            padding-top: 20px;
+            border-right: 1px solid #ddd;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+        }
+
     </style>
 </head>
 <body>
 
-<div class="sidebar">
-    <a th:href="@{/admin/dashboard}">
-        <i class="fas fa-home"></i> Dashboard
-    </a>
-    <a th:href="@{/admin/students}">
-        <i class="fas fa-users"></i> Students
-    </a>
-    <a th:href="@{/admin/courses}">
-        <i class="fas fa-book-open"></i> Courses
-    </a>
-    <a th:href="@{/admin/enrollments}">
-        <i class="fas fa-user-plus"></i> Enrollments
-    </a>
+<div class="layout">
+    <div class="sidebar">
+        <a th:href="@{/admin/dashboard}">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a th:href="@{/admin/student}">
+            <i class="fas fa-users"></i> Students
+        </a>
+        <a th:href="@{/admin/courses}">
+            <i class="fas fa-book-open"></i> Courses
+        </a>
+        <a th:href="@{/admin/enrollments}">
+            <i class="fas fa-user-plus"></i> Enrollments
+        </a>
+    </div>
 </div>
-
-
 </body>
 </html>

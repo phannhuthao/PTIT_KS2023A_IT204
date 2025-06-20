@@ -1,0 +1,30 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="header">
+<header class="header">
+    <div class="logo">
+        <img th:src="@{/images/rkei-logo.png}" alt="Logo" height="40">
+        <span class="slogan">where dreams come true</span>
+    </div>
+    <nav class="nav">
+        <a th:href="@{/listCourse}" class="listCourse">List Course</a>
+        <a th:href="@{/enrollments}" class="nav-link">Enrollments</a>
+        <a th:href="@{/profile}" class="nav-link">Profile</a>
+    </nav>
+    <div class="actions">
+        <div class="icon">
+            <i class="fas fa-envelope"></i>
+            <span class="badge">2</span>
+        </div>
+        <div class="icon">
+            <i class="fas fa-bell"></i>
+        </div>
+        <div class="profile">
+<!--            <img th:src="@{/images/user-avatar.png}" alt="User" class="avatar">-->
+            <span th:if="${session.loggedInUser != null}" th:text="${session.loggedInUser.name}" style="color: black; margin-left: 1px;"></span>
+            <span th:if="${session.loggedInUser == null}" style="color: black;">Khách</span>
+            <a th:href="@{/logout}" class="logout">Logout</a>
+        </div>
+    </div>
+</header>
+
+</div>

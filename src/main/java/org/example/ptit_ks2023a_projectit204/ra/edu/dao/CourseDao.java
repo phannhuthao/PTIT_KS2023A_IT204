@@ -25,8 +25,22 @@ public class CourseDao {
         entityManager.merge(course);
     }
 
+    public void deleteById(int id) {
+        Course course = entityManager.find(Course.class, id);
+        if (course != null) {
+            entityManager.remove(course);
+        }
+    }
+    public List<Course> searchByName(String name) {
+        String query = "SELECT c FROM Course c WHERE LOWER(c.name) LIKE LOWER(CONCAT('%', :name, '%'))";
+        return entityManager.createQuery(query, Course.class)
+                .setParameter("name", name)
+                .getResultList();
+    }
+
     public Course findById(int id) {
         return entityManager.find(Course.class, id);
     }
+
 }
 

@@ -5,21 +5,18 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public class AuthDao {
+public class StudentDao {
     @PersistenceContext
     private EntityManager entityManager;
 
     public List<Students> findAll() {
-        return entityManager.createQuery("from Students", Students.class).getResultList();
+        return entityManager.createQuery("FROM Students", Students.class).getResultList();
     }
 
-    @Transactional
-    public void save(Students student) {
-        entityManager.persist(student);
+    public void save(Students students) {
+        entityManager.persist(students);
     }
-
 }

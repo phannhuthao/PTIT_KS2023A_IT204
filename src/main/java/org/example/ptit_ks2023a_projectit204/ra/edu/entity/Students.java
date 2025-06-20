@@ -7,8 +7,6 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
-@Setter
-@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -27,16 +25,17 @@ public class Students {
 
     @NotBlank(message = "Email không được để trống")
     @Email(message = "Email phải định dạng")
-    @Column(unique = true)
     private String email;
 
     private boolean sex;
 
     @NotBlank(message = "Số điện thoại không được để trống")
-    @Column(unique = true)
     private String phone;
 
     private Date create_at;
 
     private boolean role;
+
+    @OneToMany(mappedBy = "student")
+    private java.util.List<Enrollment> enrollments;
 }

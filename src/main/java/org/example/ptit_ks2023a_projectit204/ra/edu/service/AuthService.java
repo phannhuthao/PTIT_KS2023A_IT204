@@ -1,6 +1,7 @@
 package org.example.ptit_ks2023a_projectit204.ra.edu.service;
 
 import org.example.ptit_ks2023a_projectit204.ra.edu.dao.AuthDao;
+import org.example.ptit_ks2023a_projectit204.ra.edu.dto.FormLogin;
 import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Students;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,13 +19,16 @@ public class AuthService {
         return authDao.findAll();
     }
 
-    public Students findByEmail(String email) {
-        return authDao.findByEmail(email);
+    public Students login(String email, String password) {
+        List<Students> all = authDao.findAll();
+        for (Students s : all) {
+            if (s.getEmail().equals(email) && s.getPassword().equals(password)) {
+                return s;
+            }
+        }
+        return null;
     }
 
-    public Students findByPhone(String phone) {
-        return authDao.findByPhone(phone);
-    }
 
     public void saveStudent(Students student) {
         authDao.save(student);
