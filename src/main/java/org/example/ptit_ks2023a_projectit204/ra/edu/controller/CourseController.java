@@ -128,7 +128,6 @@ public class CourseController {
         if (name != null && !name.isEmpty()) {
             courses = courseService.searchCourse(name);
         }
-
         if (nameOrder != null && !nameOrder.isEmpty()) {
             if (nameOrder.equals("asc")) {
                 courses.sort(Comparator.comparing(Course::getName));
@@ -144,16 +143,15 @@ public class CourseController {
                 courses.sort(Comparator.comparingInt(Course::getId).reversed());
             }
         }
-
         model.addAttribute("courses", courses);
         return "course";
     }
 
     @PostMapping("/registerCourse")
-    public String registerCourse(@RequestParam("id") int courseId,
+    public String registerCourse(@RequestParam("id") Integer courseId,
                                  HttpSession session,
                                  RedirectAttributes redirectAttributes) {
-        Students student = (Students) session.getAttribute("loggedInStudent");
+        Students student = (Students) session.getAttribute("loggedInUser");
 
         if (student == null) {
             redirectAttributes.addFlashAttribute("errorMessage", "Vui lòng đăng nhập trước khi đăng ký.");
@@ -164,6 +162,5 @@ public class CourseController {
         redirectAttributes.addFlashAttribute("successMessage", "Đăng ký khóa học thành công!");
         return "redirect:/listCourse";
     }
-
 
 }

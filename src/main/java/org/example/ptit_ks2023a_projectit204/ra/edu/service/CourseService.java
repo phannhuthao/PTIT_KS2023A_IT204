@@ -1,12 +1,16 @@
 package org.example.ptit_ks2023a_projectit204.ra.edu.service;
 
 import org.example.ptit_ks2023a_projectit204.ra.edu.dao.CourseDao;
+import org.example.ptit_ks2023a_projectit204.ra.edu.dao.EnrollmentDao;
 import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Course;
+import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Enrollment;
+import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Students;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,6 +20,8 @@ public class CourseService {
 
     @Autowired
     private CourseDao courseDao;
+    @Autowired
+    private EnrollmentDao enrollmentDao;
 
     @Transactional
     public List<Course> getAllCourses() {
@@ -69,12 +75,22 @@ public class CourseService {
         return stream.collect(Collectors.toList());
     }
 
-    @Autowired
-    private EnrollmentService enrollmentService;
-
+@Transactional
     public void registerStudentToCourse(int studentId, int courseId) {
         Course course = courseDao.findById(courseId);
-        enrollmentService.enrollStudent(course, studentId);
+        Students student = courseDao.find(Students.class, studentId);
+
+        if (enrollmentDao.isStudentEnrolled(studentId, courseId)) {
+            return;
+        }
+
+        Enrollment enrollment = new Enrollment();
+        enrollment.setCourse(course);
+        enrollment.setStudent(student);
+        enrollment.setRegistered_at(new Date());
+        enrollment.setStatus(true);
+
+        courseDao.persist(enrollment);
     }
 
 

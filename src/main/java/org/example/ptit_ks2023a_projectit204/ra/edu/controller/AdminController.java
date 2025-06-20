@@ -27,8 +27,7 @@ public class AdminController {
 
     @GetMapping("/admin/student")
     public String showStudent(Model model) {
-        model.addAttribute("student", studentService.getAllStudents());
-        model.addAttribute("student", new Students());
+        model.addAttribute("students", studentService.getAllStudents());
         return "student";
     }
 }

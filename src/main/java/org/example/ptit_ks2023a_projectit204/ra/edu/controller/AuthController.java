@@ -66,10 +66,11 @@ public class AuthController {
 
         student.setCreate_at(new Date());
         student.setRole(false);
+        student.setStatus(true);
         authService.saveStudent(student);
 
         model.addAttribute("success", "Đăng ký thành công!");
-        return "login";
+        return "redirect:/login";
     }
 
     @GetMapping("/admin")

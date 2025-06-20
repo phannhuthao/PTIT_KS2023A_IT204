@@ -3,6 +3,8 @@
 <head>
     <title>Trang Quản Lí Người Dùng</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 </head>
 <style>
     body {
@@ -154,6 +156,8 @@
         height: 100vh;
         box-sizing: border-box;
     }
+    .text-success { color: green; font-weight: bold; }
+    .text-danger { color: red; font-weight: bold; }
 </style>
 <body>
 <div class="layout">
@@ -173,7 +177,37 @@
     </div>
 
     <div class="content">
+        <table>
+            <thead>
+            <tr>
+                <th>Student ID</th>
+                <th>Student Name</th>
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Phone</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="student : ${students}">
+                <td th:text="${student.id}"></td>
+                <td th:text="${student.name}"></td>
+                <td th:text="${student.email}"></td>
+                <td th:text="${student.sex ? 'Nam' : 'Nữ'}"></td>
+                <td th:text="${student.phone}"></td>
+                <td>
+                    <span th:text="${student.status ? 'Active' : 'Inactive'}"
+                   th:classappend="${student.status} ? 'text-success' : 'text-danger'">
+                    </span>
+                </td>
+                <td class="action-cell">
 
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
     </div>
 
 </div>

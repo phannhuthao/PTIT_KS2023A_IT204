@@ -42,5 +42,13 @@ public class CourseDao {
         return entityManager.find(Course.class, id);
     }
 
+    public <T> T find(Class<T> entityClass, Object primaryKey) {
+        return entityManager.find(entityClass, primaryKey);
+    }
+
+    public void persist(Object entity) {
+        entityManager.persist(entity);
+    }
+
 }
 

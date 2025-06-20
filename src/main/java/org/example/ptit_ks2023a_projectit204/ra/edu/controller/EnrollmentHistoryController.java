@@ -21,7 +21,7 @@ public class EnrollmentHistoryController {
 
     @GetMapping("/enrollmentHistory")
     public String enrollmentHistory(HttpSession session, Model model) {
-        Students student = (Students) session.getAttribute("loggedInStudent");
+        Students student = (Students) session.getAttribute("loggedInUser");
         if (student != null) {
             List<Enrollment> enrollments = enrollmentService.getEnrollmentsByStudent(student.getId());
             model.addAttribute("enrollments", enrollments);

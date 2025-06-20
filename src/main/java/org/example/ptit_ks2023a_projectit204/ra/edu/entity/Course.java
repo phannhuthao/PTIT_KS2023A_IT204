@@ -16,7 +16,7 @@ import java.util.Date;
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @NotBlank(message = "Tên không được để trống")
     private String name;

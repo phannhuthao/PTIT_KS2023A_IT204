@@ -14,7 +14,7 @@ import java.util.Date;
 public class Students {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
     @NotBlank(message = "Tên không được để trống")
     private String name;
 
@@ -36,6 +36,10 @@ public class Students {
 
     private boolean role;
 
+    private boolean status;
+
     @OneToMany(mappedBy = "student")
     private java.util.List<Enrollment> enrollments;
+
+
 }
