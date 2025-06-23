@@ -19,4 +19,12 @@ public class StudentDao {
     public void save(Students students) {
         entityManager.persist(students);
     }
+
+    public Students findById(Integer id) {
+        return entityManager.find(Students.class, id);
+    }
+
+    public void update(Students student) {
+        entityManager.merge(student);
+    }
 }

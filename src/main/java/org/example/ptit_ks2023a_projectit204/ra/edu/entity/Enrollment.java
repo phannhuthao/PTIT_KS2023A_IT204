@@ -26,5 +26,12 @@ public class Enrollment {
     private Course course;
 
     private Date registered_at;
-    private boolean status;
+    public enum EnrollmentStatus {
+        WAITING,
+        CONFIRM,
+        CANCEL
+    }
+
+    @Enumerated(EnumType.STRING)
+    private EnrollmentStatus status;
 }

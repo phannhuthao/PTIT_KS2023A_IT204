@@ -3,32 +3,54 @@
 <head>
     <title>Trang Người Dùng</title>
     <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <style>
     table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
+        background-color: white;
+        border-radius: 12px;
+        overflow: hidden;
     }
 
     th, td {
-        padding: 10px;
-        border: 1px solid #ddd;
+        padding: 12px 10px;
         text-align: center;
+        font-size: 14px;
+        border-bottom: 1px solid #eee;
     }
 
     th {
-        background-color: #f2f2f2;
+        background-color: #fafafa;
+        color: #333;
+        font-weight: 600;
     }
 
     img {
-        max-width: 100px;
-        height: auto;
+        width: 100px;
+        border-radius: 4px;
+    }
+    .status-waiting {
+        color: goldenrod;
+        font-weight: bold;
+    }
+
+    .status-confirm {
+        color: green;
+        font-weight: bold;
+    }
+    .status-cancel {
+        color: red;
+        font-weight: bold;
     }
 </style>
 
 <body>
 <div th:replace="fragments/header :: header"></div>
+
+
+<h1 style="text-align: center; color: goldenrod;">List Course</h1>
 
 <table>
     <thead>
@@ -51,11 +73,16 @@
         <td th:text="${enrollment.course.instructor}">Instructor</td>
         <td><img th:src="@{${enrollment.course.image}}" style="width: 100px;" alt="Image"/></td>
         <td th:text="${#dates.format(enrollment.course.create_at, 'yyyy-MM-dd')}">Create Date</td>
-        <td th:text="${enrollment.status}">Status</td>
+        <td>
+            <span th:if="${enrollment.status.name() == 'WAITING'}" class="status-waiting">WAITING</span>
+            <span th:if="${enrollment.status.name() == 'CONFIRM'}" class="status-confirm">CONFIRM</span>
+            <span th:if="${enrollment.status.name() == 'CANCEL'}" class="status-cancel">CANCEL</span>
+        </td>
+
         <td>
             <form method="post" th:action="@{/cancelEnrollment}">
                 <input type="hidden" name="id" th:value="${enrollment.id}" />
-                <button type="submit">Cancel</button>
+                <button type="submit">Hủy</button>
             </form>
         </td>
     </tr>

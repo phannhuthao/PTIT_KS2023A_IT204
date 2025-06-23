@@ -88,7 +88,7 @@ public class CourseService {
         enrollment.setCourse(course);
         enrollment.setStudent(student);
         enrollment.setRegistered_at(new Date());
-        enrollment.setStatus(true);
+        enrollment.setStatus(Enrollment.EnrollmentStatus.WAITING);
 
         courseDao.persist(enrollment);
     }

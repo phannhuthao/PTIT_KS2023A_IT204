@@ -3,13 +3,35 @@
 <head>
     <title>Trang Người Dùng</title>
     <link rel="stylesheet" th:href="@{/css/header.css}" />
-</head>
-<style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
-</style>
+    <style>
+        h1 {
+            font-size: 36px;
+            color: #2c3e50;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+            background: linear-gradient(90deg, #f39c12, #e67e22);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-
-
+<h1>Chào mừng đến với trang chủ của người dùng</h1>
 </body>
 </html>

@@ -1,6 +1,7 @@
 package org.example.ptit_ks2023a_projectit204.ra.edu.service;
 
 import org.example.ptit_ks2023a_projectit204.ra.edu.dao.StudentDao;
+import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Course;
 import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Students;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,5 +17,16 @@ public class StudentService {
     @Transactional
     public List<Students> getAllStudents() {
         return studentDao.findAll();
+    }
+
+    @Transactional
+    public void toggleStudentStatus(Integer id) {
+        Students student = studentDao.findById(id);
+        if (student != null) {
+            // đảo trạng thái active và inactive
+            student.setStatus(!student.isStatus());
+            // cập nhật lại DB
+            studentDao.update(student);
+        }
     }
 }

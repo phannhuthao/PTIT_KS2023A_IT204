@@ -33,7 +33,7 @@ public class AuthController {
                               HttpSession session) {
         if (result.hasErrors()) {
             model.addAttribute("student", formLogin);
-            return "login";
+            return "redirect:/login";
         }
 
         Students loggedInStudent = authService.login(formLogin.getEmail(), formLogin.getPassword());
@@ -41,12 +41,18 @@ public class AuthController {
 
         if (loggedInStudent == null) {
             model.addAttribute("error", "Sai email hoặc mật khẩu");
-            return "login";
+            return "redirect:/login";
         }
 
         session.setAttribute("loggedInUser", loggedInStudent);
 
         return loggedInStudent.isRole() ? "redirect:/admin" : "redirect:/home";
+    }
+
+    @PostMapping("/logout")
+    public String actionLogout(HttpSession session) {
+        session.removeAttribute("loggedInUser");
+        return "redirect:/login";
     }
 
     @GetMapping("/register")

@@ -6,24 +6,33 @@
         <span class="slogan">where dreams come true</span>
     </div>
     <nav class="nav">
-        <a th:href="@{/listCourse}" class="listCourse">List Course</a>
+        <a th:href="@{/listCourse}" class="nav-link">List Course</a>
         <a th:href="@{/enrollmentHistory}" class="nav-link">Enrollments</a>
         <a th:href="@{/profile}" class="nav-link">Profile</a>
     </nav>
     <div class="actions">
         <div class="icon">
             <i class="fas fa-envelope"></i>
-            <span class="badge">2</span>
         </div>
         <div class="icon">
             <i class="fas fa-bell"></i>
         </div>
-        <div class="profile">
 <!--            <img th:src="@{/images/user-avatar.png}" alt="User" class="avatar">-->
-            <span th:if="${session.loggedInUser != null}" th:text="${session.loggedInUser.name}" style="color: black; margin-left: 1px;"></span>
-            <span th:if="${session.loggedInUser == null}" style="color: black;">Khách</span>
-            <a th:href="@{/logout}" class="logout">Logout</a>
+        <div class="profile">
+            <span th:if="${session.loggedInUser != null}" th:text="${session.loggedInUser.name}" style="color: black; margin-right: 10px;"></span>
+            <span th:if="${session.loggedInUser == null}" style="color: black; margin-right: 10px;">Khách</span>
+
+            <!-- Nếu chưa đăng nhập, hiển thị "Login" -->
+            <a th:if="${session.loggedInUser == null}" th:href="@{/login}" class="nav-link">Login</a>
+
+            <!-- Nếu đã đăng nhập, hiển thị icon logout -->
+            <form th:if="${session.loggedInUser != null}" th:action="@{/logout}" method="post" style="display: inline;">
+                <button type="submit" style="background: none; border: none; cursor: pointer;">
+                    <i class="fas fa-sign-out-alt" style="color: black;"></i>
+                </button>
+            </form>
         </div>
+
     </div>
 </header>
 

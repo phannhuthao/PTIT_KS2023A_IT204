@@ -3,13 +3,13 @@
 <head>
     <title>Trang Admin Quản Lí</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         body {
             margin: 0;
             font-family: Arial, sans-serif;
             display: flex;
         }
-
         .sidebar {
             width: 220px;
             background-color: #f9f9f9;
@@ -17,7 +17,6 @@
             padding-top: 20px;
             border-right: 1px solid #ddd;
         }
-
         .sidebar a {
             display: flex;
             align-items: center;
@@ -26,23 +25,15 @@
             text-decoration: none;
             transition: background-color 0.2s;
         }
-
         .sidebar a:hover {
             background-color: #eaeaea;
         }
-
-        .sidebar a.active {
-            color: #007bff;
-            font-weight: bold;
-        }
-
         .sidebar i {
             margin-right: 10px;
         }
         .layout {
             display: flex;
         }
-
         .sidebar {
             width: 220px;
             background-color: #f9f9f9;
@@ -53,7 +44,6 @@
             position: sticky;
             top: 0;
         }
-
     </style>
 </head>
 <body>
@@ -63,7 +53,7 @@
         <a th:href="@{/admin/dashboard}">
             <i class="fas fa-home"></i> Dashboard
         </a>
-        <a th:href="@{/admin/student}">
+        <a th:href="@{/admin/students}">
             <i class="fas fa-users"></i> Students
         </a>
         <a th:href="@{/admin/courses}">
