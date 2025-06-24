@@ -7,13 +7,9 @@ import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Enrollment;
 import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Students;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class CourseService {
@@ -51,28 +47,6 @@ public class CourseService {
 
     public List<Course> searchCourse(String name) {
         return courseDao.searchByName(name);
-    }
-
-    public List<Course> searchAndSort(String name, String nameOrder, String idOrder) {
-        Stream<Course> stream = courseDao.findAll().stream();
-
-        if (name != null && !name.isEmpty()) {
-            stream = stream.filter(c -> c.getName().toLowerCase().contains(name.toLowerCase()));
-        }
-
-        if ("asc".equals(nameOrder)) {
-            stream = stream.sorted(Comparator.comparing(Course::getName));
-        } else if ("desc".equals(nameOrder)) {
-            stream = stream.sorted(Comparator.comparing(Course::getName).reversed());
-        }
-
-        if ("asc".equals(idOrder)) {
-            stream = stream.sorted(Comparator.comparingInt(Course::getId));
-        } else if ("desc".equals(idOrder)) {
-            stream = stream.sorted(Comparator.comparingInt(Course::getId).reversed());
-        }
-
-        return stream.collect(Collectors.toList());
     }
 
 @Transactional

@@ -23,7 +23,7 @@ public class StudentController {
                         .filter(student -> !student.isRole())
                         .collect(Collectors.toList())
         );
-        return "student";
+        return "Admin/student";
     }
     @PostMapping("/student/toggleStatus")
     public String toggleStudentStatus(@RequestParam("id") Integer id, Model model) {

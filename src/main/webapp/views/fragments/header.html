@@ -17,7 +17,6 @@
         <div class="icon">
             <i class="fas fa-bell"></i>
         </div>
-<!--            <img th:src="@{/images/user-avatar.png}" alt="User" class="avatar">-->
         <div class="profile">
             <span th:if="${session.loggedInUser != null}" th:text="${session.loggedInUser.name}" style="color: black; margin-right: 10px;"></span>
             <span th:if="${session.loggedInUser == null}" style="color: black; margin-right: 10px;">Khách</span>

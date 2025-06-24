@@ -23,7 +23,7 @@ public class AuthController {
     @GetMapping("/login")
     public String showLogin(Model model) {
         model.addAttribute("formLogin", new FormLogin());
-        return "login";
+        return "Auth/login";
     }
 
     @PostMapping("/login")
@@ -58,7 +58,7 @@ public class AuthController {
     @GetMapping("/register")
     public String showRegister(Model model) {
         model.addAttribute("student", new Students());
-        return "register";
+        return "Auth/register";
     }
 
     @PostMapping("/register")
@@ -67,7 +67,7 @@ public class AuthController {
 
         if (result.hasErrors()) {
             model.addAttribute("student", student);
-            return "register";
+            return "Auth/register";
         }
 
         student.setCreate_at(new Date());
@@ -82,13 +82,13 @@ public class AuthController {
     @GetMapping("/admin")
     public String showAdmin(Model model) {
         model.addAttribute("student", new Students());
-        return "admin";
+        return "Admin/admin";
     }
 
     @GetMapping("/home")
     public String showHome(Model model) {
         model.addAttribute("student", new Students());
-        return "home";
+        return "User/home";
     }
 
 }

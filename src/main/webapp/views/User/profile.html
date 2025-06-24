@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Trang Người Dùng</title>
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        h1 {
+            font-size: 48px;
+            color: #f9b233;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .form-wrapper {
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .change-password-btn {
+            background-color: #3399ff;
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        form {
+            background-color: white;
+            width: 100%;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        form h2 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        form p {
+            font-size: 14px;
+            margin: 10px 0 5px;
+            font-weight: 500;
+        }
+
+        form input[type="text"],
+        form input[type="date"],
+        form select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+
+        form button[type="submit"] {
+            background-color: #c62828;
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            display: block;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 600px) {
+            .form-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div th:replace="fragments/header :: header"></div>
+
+<h1>My Profile</h1>
+
+<div class="form-wrapper">
+    <div class="form-header">
+        <h2>Change Information</h2>
+        <button class="change-password-btn">Change password</button>
+    </div>
+
+    <form>
+        <p>Name</p>
+        <input type="text" placeholder="Your name">
+
+        <p>Phone</p>
+        <input type="text" placeholder="Your phone">
+
+        <p>Email</p>
+        <input type="text" placeholder="Your email">
+
+        <p>Gender</p>
+        <select>
+            <option value="">-- Select gender --</option>
+            <option>Male</option>
+            <option>Female</option>
+        </select>
+
+        <p>Date of birth</p>
+        <input type="date">
+
+        <button type="submit">Save</button>
+    </form>
+</div>
+
+</body>
+</html>

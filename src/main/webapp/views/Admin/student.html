@@ -46,14 +46,6 @@
         cursor: pointer;
         font-weight: 500;
     }
-    .add-btn {
-        padding: 10px 20px;
-        background-color: #3b82f6;
-        color: white;
-        text-decoration: none;
-        border-radius: 8px;
-        font-weight: 500;
-    }
     table {
         width: 100%;
         border-collapse: collapse;
@@ -76,21 +68,12 @@
         width: 60px;
         border-radius: 4px;
     }
-
-    .action-cell {
-        display: flex;
-        justify-content: center;
-        gap: 12px;
-    }
-
     @media (max-width: 768px) {
         .actions {
             z-index: 1;
             position: relative;
             background-color: #f9f9f9;
         }
-
-
         .filters {
             flex-direction: column;
         }
@@ -164,7 +147,54 @@
         transform: scale(1.05);
         opacity: 0.9;
     }
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 30px;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
 
+    .pagination-container a,
+    .pagination-container .dots {
+        padding: 8px 12px;
+        border: 1px solid #e5e7eb;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #1f2937;
+        font-weight: 500;
+        font-size: 14px;
+        min-width: 36px;
+        text-align: center;
+        background-color: white;
+        transition: background-color 0.2s ease, color 0.2s ease;
+    }
+
+    .pagination-container a:hover {
+        background-color: #e0e7ff;
+        color: #1d4ed8;
+    }
+
+    .pagination-container a.active {
+        background-color: #3b82f6;
+        color: white;
+        font-weight: 600;
+        border-color: #3b82f6;
+    }
+
+    .pagination-container .disabled {
+        pointer-events: none;
+        color: #ccc;
+        border-color: #eee;
+    }
+
+    .pagination-container .dots {
+        cursor: default;
+        color: #999;
+        border: none;
+        background: transparent;
+    }
 </style>
 <body>
 <div class="layout">
@@ -243,6 +273,12 @@
             </tr>
             </tbody>
         </table>
+
+
+        <div th:if="${totalPages > 1}" class="pagination-container">
+
+        </div>
+
     </div>
 
 </div>

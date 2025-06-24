@@ -15,7 +15,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
-public class EnrollmentHistoryController {
+public class EnrollmentController {
     @Autowired
     private EnrollmentService enrollmentService;
 
@@ -25,7 +25,7 @@ public class EnrollmentHistoryController {
         if (student != null) {
             List<Enrollment> enrollments = enrollmentService.getEnrollmentsByStudent(student.getId());
             model.addAttribute("enrollments", enrollments);
-            return "enrollmentHistory";
+            return "User/enrollmentHistory";
         }
         return "redirect:/login";
     }
@@ -36,6 +36,4 @@ public class EnrollmentHistoryController {
         redirectAttributes.addFlashAttribute("successMessage", "Hủy đăng ký thành công.");
         return "redirect:/enrollmentHistory";
     }
-
-
 }

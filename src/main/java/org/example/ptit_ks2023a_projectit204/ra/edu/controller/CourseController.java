@@ -29,13 +29,13 @@ public class CourseController {
     public String showCourses(Model model) {
         model.addAttribute("courses", courseService.getAllCourses());
         model.addAttribute("course", new Course());
-        return "course";
+        return "Admin/course";
     }
 
     @GetMapping("/courseAdd")
     public String showAddCourse(Model model) {
         model.addAttribute("course", new Course());
-        return "addCourse";
+        return "Admin/addCourse";
     }
 
     @PostMapping("/courseAdd")
@@ -45,12 +45,12 @@ public class CourseController {
                             Model model) {
         if (result.hasErrors()) {
             model.addAttribute("course", course);
-            return "addCourse";
+            return "Admin/addCourse";
         }
 
         if (file.isEmpty()) {
             model.addAttribute("error", "Vui lòng chọn hình ảnh.");
-            return "addCourse";
+            return "Admin/addCourse";
         }
 
         try {
@@ -59,7 +59,7 @@ public class CourseController {
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi upload ảnh: " + e.getMessage());
             e.printStackTrace();
-            return "addCourse";
+            return "Admin/addCourse";
         }
 
         course.setCreate_at(new java.util.Date());
@@ -69,7 +69,7 @@ public class CourseController {
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi khi lưu khóa học: " + e.getMessage());
             e.printStackTrace();
-            return "addCourse";
+            return "Admin/addCourse";
         }
 
         return "redirect:/admin/courses";
@@ -79,7 +79,7 @@ public class CourseController {
     public String showEditCourse(@RequestParam("id") int id, Model model) {
         Course course = courseService.getCourseById(id);
         model.addAttribute("course", course);
-        return "editCourse";
+        return "Admin/editCourse";
     }
 
     @PostMapping("/courseEdit")
@@ -89,7 +89,7 @@ public class CourseController {
                              Model model) {
         if (result.hasErrors()) {
             model.addAttribute("course", course);
-            return "editCourse";
+            return "Admin/editCourse";
         }
 
         try {
@@ -103,7 +103,7 @@ public class CourseController {
             }
         } catch (Exception e) {
             model.addAttribute("error", "Lỗi upload ảnh: " + e.getMessage());
-            return "editCourse";
+            return "Admin/editCourse";
         }
 
         courseService.updateCourse(course);
@@ -144,7 +144,7 @@ public class CourseController {
             }
         }
         model.addAttribute("courses", courses);
-        return "course";
+        return "Admin/course";
     }
 
     @PostMapping("/registerCourse")

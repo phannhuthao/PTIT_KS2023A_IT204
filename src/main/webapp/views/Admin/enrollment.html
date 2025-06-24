@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Trang Quản Lí Đăng Ký Khóa Học</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 40px;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #1f1f1f;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        th, td {
+            padding: 12px 10px;
+            text-align: center;
+            font-size: 14px;
+            border-bottom: 1px solid #eee;
+        }
+        th {
+            background-color: #fafafa;
+            color: #333;
+            font-weight: 600;
+        }
+        .layout {
+            display: flex;
+        }
+        .sidebar {
+            width: 220px;
+            background-color: #f9f9f9;
+            height: 100vh;
+            padding-top: 20px;
+            border-right: 1px solid #ddd;
+            flex-shrink: 0;
+            position: sticky;
+            top: 0;
+        }
+        .sidebar a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.2s;
+        }
+        .sidebar a:hover {
+            background-color: #eaeaea;
+        }
+        .sidebar i {
+            margin-right: 10px;
+        }
+        .content {
+            flex: 1;
+            padding: 40px;
+            background-color: #f9f9f9;
+            overflow-x: auto;
+            height: 100vh;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 6px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin: 0 4px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        button[type="submit"] {
+            background-color: #3b82f6;
+            color: white;
+        }
+        button[type="submit"]:hover {
+            background-color: #2563eb;
+            transform: scale(1.05);
+        }
+        .actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        select, input[type="search"] {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #fff;
+        }
+
+        button.search-btn {
+            padding: 8px 16px;
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .pagination-container a,
+        .pagination-container .dots {
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #1f2937;
+            font-weight: 500;
+            font-size: 14px;
+            min-width: 36px;
+            text-align: center;
+            background-color: white;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .pagination-container a:hover {
+            background-color: #e0e7ff;
+            color: #1d4ed8;
+        }
+
+        .pagination-container a.active {
+            background-color: #3b82f6;
+            color: white;
+            font-weight: 600;
+            border-color: #3b82f6;
+        }
+
+        .pagination-container .disabled {
+            pointer-events: none;
+            color: #ccc;
+            border-color: #eee;
+        }
+
+        .pagination-container .dots {
+            cursor: default;
+            color: #999;
+            border: none;
+            background: transparent;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layout">
+    <div class="sidebar">
+        <a th:href="@{/admin/dashboard}">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a th:href="@{/admin/students}">
+            <i class="fas fa-users"></i> Students
+        </a>
+        <a th:href="@{/admin/courses}">
+            <i class="fas fa-book-open"></i> Courses
+        </a>
+        <a th:href="@{/admin/enrollments}">
+            <i class="fas fa-user-plus"></i> Enrollments
+        </a>
+    </div>
+
+    <div class="content">
+        <h1>Quản Lí Đăng Ký Khóa Học</h1>
+
+        <div class="table-wrapper">
+            <form th:action="@{/admin/enrollments}" method="get" class="filters">
+                <select name="sortByStatusOrder">
+                    <option value="">Sort by Status</option>
+                    <option value="waiting">WATTING</option>
+                    <option value="confirm">COFIRM</option>
+                    <option value="denied">DENIED</option>
+                </select>
+                <input type="search" name="name" placeholder="Search course by name">
+                <button type="submit" class="search-btn">Search</button>
+            </form>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Enrollment ID</th>
+                    <th>Student Name</th>
+                    <th>Course Name</th>
+                    <th>Registered Date</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="enrollment : ${enrollments}">
+                    <td th:text="${enrollment.id}"></td>
+                    <td th:text="${enrollment.student.name}"></td>
+                    <td th:text="${enrollment.course.name}"></td>
+                    <td th:text="${enrollment.course.create_at}"></td>
+                    <td th:text="${enrollment.status}"></td>
+                    <td>
+                        <form style="display:inline;" method="post" th:action="@{/admin/enrollments}">
+                            <input type="hidden" name="id" th:value="${enrollment.id}" />
+                            <input type="hidden" name="action" value="confirm" />
+                            <button type="submit">CONFIRM</button>
+                        </form>
+                        <form style="display:inline;" method="post" th:action="@{/admin/enrollments}">
+                            <input type="hidden" name="id" th:value="${enrollment.id}" />
+                            <input type="hidden" name="action" value="deny" />
+                            <button type="submit">DENIED</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div th:if="${totalPages > 1}" class="pagination-container">
+                <a th:href="@{/admin/enrollments(page=${currentPage - 1}, size=10, name=${param.name}, sortByStatusOrder=${param.sortByStatusOrder})}"
+                   th:classappend="${currentPage == 0} ? 'disabled' : ''">←</a>
+
+                <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:if="${i < 3 || i >= totalPages - 1 || (i >= currentPage - 1 && i <= currentPage + 1)}"
+           th:href="@{/admin/enrollments(page=${i}, size=10, name=${param.name}, sortByStatusOrder=${param.sortByStatusOrder})}"
+           th:text="${i + 1}"
+           th:classappend="${i == currentPage} ? 'active' : ''"></a>
+        <span th:if="${i == currentPage - 2 || i == currentPage + 2}" class="dots">...</span>
+    </span>
+
+                <a th:href="@{/admin/enrollments(page=${currentPage + 1}, size=10, name=${param.name}, sortByStatusOrder=${param.sortByStatusOrder})}"
+                   th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">→</a>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+</body>
+</html>

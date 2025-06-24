@@ -25,6 +25,6 @@ public class ListCourseController {
             courses = courseService.getAllCourses();
         }
         model.addAttribute("courses", courses);
-        return "listCourse";
+        return "User/listCourse";
     }
 }

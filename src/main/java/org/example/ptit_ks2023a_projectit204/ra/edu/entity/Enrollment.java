@@ -29,7 +29,8 @@ public class Enrollment {
     public enum EnrollmentStatus {
         WAITING,
         CONFIRM,
-        CANCEL
+        CANCEL,
+        DENIED
     }
 
     @Enumerated(EnumType.STRING)

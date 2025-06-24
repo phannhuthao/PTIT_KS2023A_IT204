@@ -171,6 +171,54 @@
             height: 100vh;
             box-sizing: border-box;
         }
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .pagination-container a,
+        .pagination-container .dots {
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #1f2937;
+            font-weight: 500;
+            font-size: 14px;
+            min-width: 36px;
+            text-align: center;
+            background-color: white;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .pagination-container a:hover {
+            background-color: #e0e7ff;
+            color: #1d4ed8;
+        }
+
+        .pagination-container a.active {
+            background-color: #3b82f6;
+            color: white;
+            font-weight: 600;
+            border-color: #3b82f6;
+        }
+
+        .pagination-container .disabled {
+            pointer-events: none;
+            color: #ccc;
+            border-color: #eee;
+        }
+
+        .pagination-container .dots {
+            cursor: default;
+            color: #999;
+            border: none;
+            background: transparent;
+        }
     </style>
 </head>
 <body>
@@ -242,6 +290,21 @@
             </tr>
             </tbody>
         </table>
+
+        <div th:if="${totalPages > 1}" class="pagination-container">
+        <a th:href="@{/admin/courses(page=${currentPage - 1}, size=5, name=${name}, nameOrder=${nameOrder}, idOrder=${idOrder})}"
+           th:classappend="${currentPage == 0} ? 'disabled' : ''">←</a>
+
+        <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+           th:if="${i < 3 || i >= totalPages - 1 || (i >= currentPage - 1 && i <= currentPage + 1)}"
+           th:href="@{/admin/courses(page=${i}, size=5, name=${name}, nameOrder=${nameOrder}, idOrder=${idOrder})}"
+           th:text="${i + 1}"
+           th:classappend="${i == currentPage} ? 'active' : ''"></a>
+
+        <a th:href="@{/admin/courses(page=${currentPage + 1}, size=5, name=${name}, nameOrder=${nameOrder}, idOrder=${idOrder})}"
+           th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">→</a>
+        </div>
+
     </div>
 </div>
 </body>

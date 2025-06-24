@@ -44,6 +44,10 @@
         color: red;
         font-weight: bold;
     }
+    .status-denied {
+        color: red;
+        font-weight: bold;
+    }
 </style>
 
 <body>
@@ -77,6 +81,7 @@
             <span th:if="${enrollment.status.name() == 'WAITING'}" class="status-waiting">WAITING</span>
             <span th:if="${enrollment.status.name() == 'CONFIRM'}" class="status-confirm">CONFIRM</span>
             <span th:if="${enrollment.status.name() == 'CANCEL'}" class="status-cancel">CANCEL</span>
+            <span th:if="${enrollment.status.name() == 'DENIED'}" class="status-denied">DENIED</span>
         </td>
 
         <td>

@@ -36,4 +36,10 @@ public class EnrollmentDao {
         return count > 0;
     }
 
+    public List<Enrollment> findAllEnrollments() {
+        String jpql = "SELECT e FROM Enrollment e";
+        return entityManager.createQuery(jpql, Enrollment.class).getResultList();
+    }
+
+
 }

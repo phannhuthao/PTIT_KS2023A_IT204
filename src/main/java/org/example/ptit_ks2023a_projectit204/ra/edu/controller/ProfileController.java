@@ -5,9 +5,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class HomeController {
-    @GetMapping("/")
-    public String showHome(Model model) {
-        return "User/home";
+public class ProfileController {
+    @GetMapping("/profile")
+    public String showProfile(Model model) {
+        return "User/profile";
     }
 }
