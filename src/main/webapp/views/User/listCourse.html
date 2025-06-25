@@ -16,7 +16,8 @@
         .course-card img {
             width: 100%;
             height: 120px;
-            object-fit: cover;
+            object-fit: contain;
+            background-color: #f9f9f9;
         }
         .alert {
             position: fixed;
@@ -43,21 +44,95 @@
             color: #721c24;
             border: 1px solid #f5c6cb;
         }
+        .btn-register {
+            background-color: #228B22;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            width: 100%;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-register:hover {
+            background-color: green;
+            color: #000;
+        }
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .pagination-container a,
+        .pagination-container .dots {
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #1f2937;
+            font-weight: 500;
+            font-size: 14px;
+            min-width: 36px;
+            text-align: center;
+            background-color: white;
+            transition: background-color 0.2s ease, color 0.2s ease;
+        }
+
+        .pagination-container a:hover {
+            background-color: #e0e7ff;
+            color: #1d4ed8;
+        }
+
+        .pagination-container a.active {
+            background-color: #3b82f6;
+            color: white;
+            font-weight: 600;
+            border-color: #3b82f6;
+        }
+
+        .pagination-container .disabled {
+            pointer-events: none;
+            color: #ccc;
+            border-color: #eee;
+        }
+
+        .pagination-container .dots {
+            cursor: default;
+            color: #999;
+            border: none;
+            background: transparent;
+        }
+        /*.center-message {*/
+        /*    display: flex;*/
+        /*    justify-content: center;*/
+        /*    align-items: center;*/
+        /*    height: 100vh;*/
+        /*}*/
     </style>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
 
 <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
-<div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+<!--<div class="center-message">-->
+<!--    <div th:if="${errorMessage}" class="alert alert-danger text-center" th:text="${errorMessage}"></div>-->
+<!--</div>-->
 
 
 <h1 style="text-align: center; color: goldenrod;">List Course</h1>
 
 <form method="get" action="/listCourse" style="text-align: center; margin-bottom: 20px;">
-    <input type="text" name="search" placeholder="search course by name"/>
+    <input type="text" name="search" placeholder="search course by name"
+           th:value="${search}" />
     <button type="submit">Search</button>
 </form>
+
 
 <div style="display: flex; flex-wrap: wrap; justify-content: center;">
     <div class="course-card" th:each="course : ${courses}">
@@ -69,11 +144,23 @@
 
         <form method="post" th:action="@{/registerCourse}" onsubmit="return confirmRegister();">
             <input type="hidden" name="id" th:value="${course.id}" />
-            <button type="submit" class="btn btn-primary">Đăng ký</button>
+            <button type="submit" class="btn-register">Đăng ký</button>
         </form>
-
     </div>
+</div>
 
+<div th:if="${totalPages > 1}" class="pagination-container" style="text-align: center; margin-top: 20px;">
+    <a th:href="@{/listCourse(page=${currentPage - 1}, size=5, search=${search})}"
+       th:classappend="${currentPage == 0} ? 'disabled' : ''">←</a>
+
+    <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+       th:if="${i < 3 || i >= totalPages - 1 || (i >= currentPage - 1 && i <= currentPage + 1)}"
+       th:href="@{/listCourse(page=${i}, size=5, search=${search})}"
+       th:text="${i + 1}"
+       th:classappend="${i == currentPage} ? 'active' : ''"></a>
+
+    <a th:href="@{/listCourse(page=${currentPage + 1}, size=5, search=${search})}"
+       th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">→</a>
 </div>
 </body>
 <script>

@@ -65,7 +65,7 @@
     <input type="password" th:field="*{password}" placeholder="Mật khẩu"/>
     <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
 
-    <div th:if="${error != null}" th:text="${error}"></div>
+    <div th:if="${error != null}" th:text="${error}" style="color:red; margin-bottom: 10px;"></div>
 
     <input type="submit" value="Đăng nhập" />
     <p>Don't have an account ? <a href="register">register</a></p>

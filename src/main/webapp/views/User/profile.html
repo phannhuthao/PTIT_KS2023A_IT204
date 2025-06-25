@@ -13,21 +13,19 @@
             font-weight: bold;
             text-align: center;
         }
-
         .form-wrapper {
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
             padding: 0 15px;
         }
-
         .form-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            padding: 0 30px;
         }
-
         .change-password-btn {
             background-color: #3399ff;
             color: white;
@@ -36,22 +34,24 @@
             border-radius: 6px;
             cursor: pointer;
             font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+            margin-top: 10px;
         }
 
+        .change-password-btn:hover {
+            background-color: #228be6;
+        }
         form {
             background-color: white;
             width: 100%;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
-
         form h2 {
             font-size: 20px;
             margin-bottom: 20px;
             font-weight: bold;
         }
-
         form p {
             font-size: 14px;
             margin: 10px 0 5px;
@@ -68,24 +68,25 @@
             margin-bottom: 15px;
             font-size: 14px;
         }
-
-        form button[type="submit"] {
-            background-color: #c62828;
+        .success-message {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #4CAF50;
             color: white;
-            border: none;
-            padding: 10px 24px;
+            padding: 12px 24px;
             border-radius: 6px;
             font-size: 16px;
-            cursor: pointer;
-            display: block;
-            margin: 0 auto;
+            font-weight: bold;
+            z-index: 9999;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            animation: fadeOut 1s ease-in-out 1s forwards;
         }
-
-        @media (max-width: 600px) {
-            .form-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
+        @keyframes fadeOut {
+            to {
+                opacity: 0;
+                visibility: hidden;
             }
         }
     </style>
@@ -96,35 +97,48 @@
 
 <h1>My Profile</h1>
 
+<div id="successMessage" th:if="${param.success}" class="success-message">
+    Thông tin đã được cập nhật thành công!
+</div>
+
 <div class="form-wrapper">
     <div class="form-header">
         <h2>Change Information</h2>
-        <button class="change-password-btn">Change password</button>
+        <form method="get" action="/profile/confirmPassword">
+            <button type="submit" class="change-password-btn">Change password</button>
+        </form>
     </div>
 
-    <form>
+    <form th:action="@{/profile}" th:object="${student}" method="post">
         <p>Name</p>
-        <input type="text" placeholder="Your name">
+        <input type="text" th:field="*{name}" placeholder="Your name">
 
         <p>Phone</p>
-        <input type="text" placeholder="Your phone">
+        <input type="text" th:field="*{phone}" placeholder="Your phone">
 
         <p>Email</p>
-        <input type="text" placeholder="Your email">
+        <input type="text" th:field="*{email}" placeholder="Your email">
 
         <p>Gender</p>
-        <select>
-            <option value="">-- Select gender --</option>
-            <option>Male</option>
-            <option>Female</option>
+        <select th:field="*{sex}">
+            <option th:value="true">Male</option>
+            <option th:value="false">Female</option>
         </select>
 
         <p>Date of birth</p>
-        <input type="date">
+        <input type="date" th:field="*{dob}">
 
-        <button type="submit">Save</button>
+        <br>
+        <button type="submit">Lưu</button>
     </form>
 </div>
-
 </body>
+<script>
+    setTimeout(() => {
+        const msg = document.getElementById("successMessage");
+        if (msg) {
+            msg.remove();
+        }
+    }, 2000);
+</script>
 </html>

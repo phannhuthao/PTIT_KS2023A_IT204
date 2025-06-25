@@ -19,7 +19,6 @@ public class AuthDao {
 
     @Transactional
     public void save(Students student) {
-        entityManager.persist(student);
+        entityManager.merge(student);
     }
-
 }

@@ -19,7 +19,8 @@
             padding: 40px;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            width: 400px;
+            width: 450px;
+            height: 500px;
         }
 
         h2 {
@@ -62,6 +63,15 @@
 
     <input type="text" th:field="*{email}" placeholder="Nhập email vào...">
     <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+
+<!--    <div>-->
+<!--        <select th:field="*{sex}">-->
+<!--            <option value="">Chọn Giới Tính</option>-->
+<!--            <option value="true">Nam</option>-->
+<!--            <option value="false">Nữ</option>-->
+<!--        </select>-->
+<!--        <div th:if="${#fields.hasErrors('sex')}" th:errors="*{sex}"></div>-->
+<!--    </div>-->
 
     <input type="text" th:field="*{password}" placeholder="Nhập mật khẩu vào...">
     <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>

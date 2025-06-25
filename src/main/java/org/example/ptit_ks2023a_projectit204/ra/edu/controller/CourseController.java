@@ -150,11 +150,11 @@ public class CourseController {
     @PostMapping("/registerCourse")
     public String registerCourse(@RequestParam("id") Integer courseId,
                                  HttpSession session,
-                                 RedirectAttributes redirectAttributes) {
+                                 RedirectAttributes redirectAttributes, Model model) {
         Students student = (Students) session.getAttribute("loggedInUser");
 
         if (student == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Vui lòng đăng nhập trước khi đăng ký.");
+            redirectAttributes.addFlashAttribute("errorMessage", "Vui lòng đăng nhập trước");
             return "redirect:/login";
         }
 

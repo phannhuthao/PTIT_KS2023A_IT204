@@ -17,14 +17,38 @@ public class ListCourseController {
     private CourseService courseService;
 
     @GetMapping("/listCourse")
-    public String listCourse(@RequestParam(value = "search", required = false) String search, Model model) {
+    public String listCourse(
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            Model model) {
+
         List<Course> courses;
         if (search != null && !search.isEmpty()) {
             courses = courseService.searchCourse(search);
+            model.addAttribute("search", search);
         } else {
             courses = courseService.getAllCourses();
         }
-        model.addAttribute("courses", courses);
+
+        int totalCourses = courses.size();
+        int totalPages = (int) Math.ceil((double) totalCourses / size);
+        int fromIndex = page * size;
+        int toIndex = Math.min(fromIndex + size, totalCourses);
+
+        if (fromIndex > toIndex) {
+            fromIndex = 0;
+            page = 0;
+        }
+
+        List<Course> paginatedCourses = courses.subList(fromIndex, toIndex);
+
+        model.addAttribute("courses", paginatedCourses);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("search", search);
+
         return "User/listCourse";
     }
+
 }

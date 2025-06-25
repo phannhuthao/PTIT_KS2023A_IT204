@@ -44,6 +44,12 @@ public class AuthController {
             return "redirect:/login";
         }
 
+        if (!loggedInStudent.isStatus()) {
+            model.addAttribute("error", "Tài Khoản Của Bạn Đã Bị Khóa");
+            model.addAttribute("formLogin", formLogin);
+            return "Auth/login";
+        }
+
         session.setAttribute("loggedInUser", loggedInStudent);
 
         return loggedInStudent.isRole() ? "redirect:/admin" : "redirect:/home";

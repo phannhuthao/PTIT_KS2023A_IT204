@@ -1,27 +1,25 @@
-package org.example.ptit_ks2023a_projectit204.ra.edu.entity;
+package org.example.ptit_ks2023a_projectit204.ra.edu.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
-@Entity
-public class Students {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class FormUpdateProfile {
     @NotBlank(message = "Tên không được để trống")
     private String name;
 
-    @NotBlank(message = "Mật khẩu không được để trống")
-    private String password;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date dob;
 
     @NotBlank(message = "Email không được để trống")
@@ -33,15 +31,4 @@ public class Students {
 
     @NotBlank(message = "Số điện thoại không được để trống")
     private String phone;
-
-    private Date create_at;
-
-    private boolean role;
-
-    private boolean status;
-
-    @OneToMany(mappedBy = "student")
-    private java.util.List<Enrollment> enrollments;
-
-
 }
