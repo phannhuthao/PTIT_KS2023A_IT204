@@ -1,4 +1,4 @@
-package org.example.ptit_ks2023a_projectit204.ra.edu.service;
+package org.example.ptit_ks2023a_projectit204.ra.edu.service.serviceImpl;
 
 import org.example.ptit_ks2023a_projectit204.ra.edu.dao.CourseDao;
 import org.example.ptit_ks2023a_projectit204.ra.edu.dao.EnrollmentDao;
@@ -66,6 +66,12 @@ public class CourseService {
 
         courseDao.persist(enrollment);
     }
+
+@Transactional
+public List<Course> findAll() {
+    return courseDao.findAll();
+}
+
 
 
 }

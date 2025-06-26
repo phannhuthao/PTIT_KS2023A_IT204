@@ -3,7 +3,7 @@ package org.example.ptit_ks2023a_projectit204.ra.edu.controller;
 import org.example.ptit_ks2023a_projectit204.ra.edu.dto.ChangePasswordForm;
 import org.example.ptit_ks2023a_projectit204.ra.edu.dto.FormUpdateProfile;
 import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Students;
-import org.example.ptit_ks2023a_projectit204.ra.edu.service.AuthService;
+import org.example.ptit_ks2023a_projectit204.ra.edu.service.serviceImpl.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

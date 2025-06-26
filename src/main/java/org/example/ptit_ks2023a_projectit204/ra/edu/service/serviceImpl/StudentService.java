@@ -1,7 +1,6 @@
-package org.example.ptit_ks2023a_projectit204.ra.edu.service;
+package org.example.ptit_ks2023a_projectit204.ra.edu.service.serviceImpl;
 
 import org.example.ptit_ks2023a_projectit204.ra.edu.dao.StudentDao;
-import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Course;
 import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Students;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,4 +28,10 @@ public class StudentService {
             studentDao.update(student);
         }
     }
+    @Transactional
+    public List<Students> findAll() {
+        return studentDao.findAll();
+    }
+
+
 }

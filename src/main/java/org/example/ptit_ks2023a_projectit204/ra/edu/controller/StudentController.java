@@ -1,6 +1,6 @@
 package org.example.ptit_ks2023a_projectit204.ra.edu.controller;
 
-import org.example.ptit_ks2023a_projectit204.ra.edu.service.StudentService;
+import org.example.ptit_ks2023a_projectit204.ra.edu.service.serviceImpl.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

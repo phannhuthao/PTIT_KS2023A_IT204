@@ -164,12 +164,42 @@
             border: none;
             background: transparent;
         }
+        .logout-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .logout-container form button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .logout-container form button i {
+            color: black;
+            transition: color 0.3s;
+        }
+
+        .logout-container form button:hover i {
+            color: red;
+        }
     </style>
 </head>
 <body>
+<div class="logout-container" th:if="${session.loggedInUser != null}">
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+        </button>
+    </form>
+</div>
 
 <div class="layout">
     <div class="sidebar">
+        <a href="/admin"><h1>Hi, Admin</h1></a>
         <a th:href="@{/admin/dashboard}">
             <i class="fas fa-home"></i> Dashboard
         </a>

@@ -1,11 +1,12 @@
 package org.example.ptit_ks2023a_projectit204.ra.edu.controller;
 
+import org.example.ptit_ks2023a_projectit204.ra.edu.dto.CourseStatisticForm;
 import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Course;
 import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Enrollment;
 import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Students;
-import org.example.ptit_ks2023a_projectit204.ra.edu.service.CourseService;
-import org.example.ptit_ks2023a_projectit204.ra.edu.service.EnrollmentService;
-import org.example.ptit_ks2023a_projectit204.ra.edu.service.StudentService;
+import org.example.ptit_ks2023a_projectit204.ra.edu.service.serviceImpl.CourseService;
+import org.example.ptit_ks2023a_projectit204.ra.edu.service.serviceImpl.EnrollmentService;
+import org.example.ptit_ks2023a_projectit204.ra.edu.service.serviceImpl.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,42 @@ public class AdminController {
     private StudentService studentService;
     @Autowired
     private EnrollmentService enrollmentService;
+
+    @GetMapping("/admin/dashboard")
+    public String dashboard(Model model) {
+        // tạo biến đếm để đếm tổng số sinh viên, khóa học và lượt đăng ký từ service tương ứng
+        int totalStudents = studentService.findAll().size();
+        int totalCourses = courseService.findAll().size();
+        int totalEnrollments = enrollmentService.findAll().size();
+
+        model.addAttribute("totalStudents", totalStudents);
+        model.addAttribute("totalCourses", totalCourses);
+        model.addAttribute("totalEnrollments", totalEnrollments);
+
+        // Danh sách thống kê sinh viên theo từng khóa học
+        List<Course> allCourses = courseService.getAllCourses();
+        // Tính số sinh viên đã đăng ký cho từng khóa học và đóng gói vào CourseStatisticForm
+        List<CourseStatisticForm> courseStats = allCourses.stream().map(course -> {
+            // Đếm số lượt đăng ký có courseId trùng với khóa học hiện tại
+            long count = enrollmentService.findAll().stream()
+                    .filter(enrollment -> enrollment.getCourse().getId().equals(course.getId()))
+                    .count();
+            return new CourseStatisticForm(course, (int) count);
+        }).collect(Collectors.toList());
+
+        model.addAttribute("courseStats", courseStats);
+
+        // Top 5 khóa học có nhiều sinh viên nhất
+        // Sắp xếp danh sách trên theo số lượng sinh viên đăng ký giảm dần, lấy top 5
+        List<CourseStatisticForm> topCourses = courseStats.stream()
+                .sorted(Comparator.comparingInt(CourseStatisticForm::getStudentCount).reversed())
+                .limit(5)
+                .collect(Collectors.toList());
+
+        model.addAttribute("topCourses", topCourses);
+
+        return "Admin/dashboard";
+    }
 
     @GetMapping("/admin/courses")
     public String showCourses(
@@ -148,38 +185,41 @@ public class AdminController {
 
     @GetMapping("/admin/students")
     public String showStudent(
-            @RequestParam(value = "name", required = false) String name,
-            @RequestParam(value = "nameOrder", required = false) String nameOrder,
-            @RequestParam(value = "idOrder", required = false) String idOrder,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
+            @RequestParam(value = "search", required = false) String search,
             Model model) {
 
+        // Lấy danh sách tất cả học sinh không phải admin
         List<Students> students = studentService.getAllStudents()
                 .stream()
                 .filter(s -> !s.isRole())
                 .collect(Collectors.toList());
 
-        if (name != null && !name.isEmpty()) {
+        // Lọc theo search nếu có
+        if (search != null && !search.isEmpty()) {
             students = students.stream()
-                    .filter(s -> s.getName().toLowerCase().contains(name.toLowerCase())
-                            || s.getEmail().toLowerCase().contains(name.toLowerCase())
-                            || String.valueOf(s.getId()).contains(name))
+                    .filter(s -> s.getName().toLowerCase().contains(search.toLowerCase())
+                            || s.getEmail().toLowerCase().contains(search.toLowerCase())
+                            || String.valueOf(s.getId()).contains(search))
                     .collect(Collectors.toList());
         }
 
-        if ("asc".equalsIgnoreCase(nameOrder)) {
-            students.sort(Comparator.comparing(Students::getName));
-        } else if ("desc".equalsIgnoreCase(nameOrder)) {
-            students.sort(Comparator.comparing(Students::getName).reversed());
-        }
+        // Tổng số trang
+        int totalStudents = students.size();
+        int totalPages = (int) Math.ceil((double) totalStudents / size);
 
-        if ("asc".equalsIgnoreCase(idOrder)) {
-            students.sort(Comparator.comparingInt(Students::getId));
-        } else if ("desc".equalsIgnoreCase(idOrder)) {
-            students.sort(Comparator.comparingInt(Students::getId).reversed());
-        }
+        // Lấy danh sách cho trang hiện tại
+        int fromIndex = page * size;
+        int toIndex = Math.min(fromIndex + size, totalStudents);
+        List<Students> pageStudents = students.subList(fromIndex, toIndex);
 
-        model.addAttribute("students", students);
+        // Truyền dữ liệu sang view
+        model.addAttribute("students", pageStudents);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("search", search);
+
         return "Admin/student";
     }
-
 }

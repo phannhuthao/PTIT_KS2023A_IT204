@@ -1,4 +1,4 @@
-package org.example.ptit_ks2023a_projectit204.ra.edu.service;
+package org.example.ptit_ks2023a_projectit204.ra.edu.service.serviceImpl;
 
 import org.example.ptit_ks2023a_projectit204.ra.edu.dao.EnrollmentDao;
 import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Enrollment;
@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,22 +37,17 @@ public class EnrollmentService {
         }
     }
 
-    public List<Enrollment> getEnrollmentsPaginated(int page, int size) {
-        List<Enrollment> allEnrollments = enrollmentDao.findAllEnrollments();
-        int fromIndex = page * size;
-        int toIndex = Math.min(fromIndex + size, allEnrollments.size());
-
-        if (fromIndex >= allEnrollments.size()) {
-            return new ArrayList<>();
+    public List<Enrollment> getEnrollmentsByStudentAndStatus(int studentId, String status) {
+        if (status == null || status.isEmpty()) {
+            return getEnrollmentsByStudent(studentId);
         }
-
-        return allEnrollments.subList(fromIndex, toIndex);
+        return enrollmentDao.findByStudentIdAndStatus(studentId, status);
     }
 
 
-    public int getTotalEnrollments() {
-        return enrollmentDao.findAllEnrollments().size();
+    @Transactional
+    public List<Enrollment> findAll() {
+        return enrollmentDao.findAll();
     }
-
 }
 

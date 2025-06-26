@@ -60,10 +60,10 @@
     <h2>Đăng Nhập</h2>
 
     <input type="text" th:field="*{email}" placeholder="Email"/>
-    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+    <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red"></div>
 
     <input type="password" th:field="*{password}" placeholder="Mật khẩu"/>
-    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+    <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red"></div>
 
     <div th:if="${error != null}" th:text="${error}" style="color:red; margin-bottom: 10px;"></div>
 

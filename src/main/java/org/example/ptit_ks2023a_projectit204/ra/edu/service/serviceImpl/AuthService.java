@@ -1,4 +1,4 @@
-package org.example.ptit_ks2023a_projectit204.ra.edu.service;
+package org.example.ptit_ks2023a_projectit204.ra.edu.service.serviceImpl;
 
 import org.example.ptit_ks2023a_projectit204.ra.edu.dao.AuthDao;
 import org.example.ptit_ks2023a_projectit204.ra.edu.dto.ChangePasswordForm;

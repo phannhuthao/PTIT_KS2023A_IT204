@@ -124,29 +124,6 @@
         height: 100vh;
         box-sizing: border-box;
     }
-    .lock-btn {
-        padding: 6px 14px;
-        border: none;
-        border-radius: 6px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-    }
-
-    .lock-btn.lock {
-        background-color: #f5deb3;
-        color: #4a3f2c;
-    }
-
-    .lock-btn.unlock {
-        background-color: #4ade80;
-        color: #0f5132;
-    }
-
-    .lock-btn:hover {
-        transform: scale(1.05);
-        opacity: 0.9;
-    }
     .pagination-container {
         display: flex;
         justify-content: center;
@@ -195,10 +172,38 @@
         border: none;
         background: transparent;
     }
+    .logout-container {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+    .logout-container form button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 24px;
+    }
+    .logout-container form button i {
+        color: black;
+        transition: color 0.3s;
+    }
+    .logout-container form button:hover i {
+        color: red;
+    }
 </style>
 <body>
+<div class="logout-container" th:if="${session.loggedInUser != null}">
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+        </button>
+    </form>
+</div>
+
 <div class="layout">
     <div class="sidebar">
+        <a href="/admin"><h1>Hi, Admin</h1></a>
         <a th:href="@{/admin/dashboard}">
             <i class="fas fa-home"></i> Dashboard
         </a>
@@ -273,14 +278,28 @@
             </tr>
             </tbody>
         </table>
-
-
+        <!-- Nếu tổng số trang lớn hơn 1 thì mới hiển thị thanh phân trang -->
         <div th:if="${totalPages > 1}" class="pagination-container">
+            <!-- Nút "←" để chuyển sang trang trước. Bị vô hiệu hóa (disabled) nếu đang ở trang đầu tiên (currentPage == 0) -->
+            <a th:href="@{/admin/students(page=${currentPage - 1}, size=5, search=${search})}"
+               th:classappend="${currentPage == 0} ? 'disabled' : ''">←</a>
 
+            <!-- Lặp qua danh sách các chỉ số trang để hiển thị nút số trang -->
+            <!-- Hiển thị trang khi: là 2 trang đầu (i < 3), trang cuối (i >= totalPages - 1),
+                 hoặc trang nằm gần trang hiện tại (trong khoảng currentPage - 1 đến currentPage + 1) -->
+            <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+               th:if="${i < 3 || i >= totalPages - 1 || (i >= currentPage - 1 && i <= currentPage + 1)}"
+               th:href="@{/admin/students(page=${i}, size=5, search=${search})}"
+               th:text="${i + 1}"
+               th:classappend="${i == currentPage} ? 'active' : ''"></a>
+
+            <!-- Nút "→" để chuyển sang trang kế tiếp. Bị vô hiệu hóa nếu đang ở trang cuối -->
+            <a th:href="@{/admin/students(page=${currentPage + 1}, size=5, search=${search})}"
+               th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">→</a>
         </div>
-
     </div>
-
 </div>
+
+
 </body>
 </html>

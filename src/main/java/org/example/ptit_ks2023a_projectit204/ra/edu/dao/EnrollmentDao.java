@@ -41,5 +41,19 @@ public class EnrollmentDao {
         return entityManager.createQuery(jpql, Enrollment.class).getResultList();
     }
 
+    public List<Enrollment> findAll() {
+        return entityManager.createQuery("SELECT e FROM Enrollment e", Enrollment.class)
+                .getResultList();
+    }
+
+    public List<Enrollment> findByStudentIdAndStatus(int studentId, String status) {
+        String jpql = "SELECT e FROM Enrollment e WHERE e.student.id = :studentId AND e.status = :status";
+        return entityManager.createQuery(jpql, Enrollment.class)
+                .setParameter("studentId", studentId)
+                .setParameter("status", Enrollment.EnrollmentStatus.valueOf(status))
+                .getResultList();
+    }
+
+
 
 }

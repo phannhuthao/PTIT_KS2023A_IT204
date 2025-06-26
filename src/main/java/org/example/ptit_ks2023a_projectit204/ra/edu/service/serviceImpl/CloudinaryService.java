@@ -1,4 +1,4 @@
-package org.example.ptit_ks2023a_projectit204.ra.edu.service;
+package org.example.ptit_ks2023a_projectit204.ra.edu.service.serviceImpl;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;

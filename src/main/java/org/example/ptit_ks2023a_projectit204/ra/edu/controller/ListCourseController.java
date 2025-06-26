@@ -1,7 +1,7 @@
 package org.example.ptit_ks2023a_projectit204.ra.edu.controller;
 
 import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Course;
-import org.example.ptit_ks2023a_projectit204.ra.edu.service.CourseService;
+import org.example.ptit_ks2023a_projectit204.ra.edu.service.serviceImpl.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

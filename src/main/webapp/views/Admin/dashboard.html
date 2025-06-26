@@ -1,11 +1,272 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Trang Người Dùng</title>
+    <title>Trang Thống Kê</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
-<body>
+<style>
+    body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 40px;
+        background-color: #f9f9f9;
+    }
+    .logout-container {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
 
+    .logout-container form button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 24px;
+    }
+
+    .logout-container form button i {
+        color: black;
+        transition: color 0.3s;
+    }
+
+    .logout-container form button:hover i {
+        color: red;
+    }
+    .sidebar {
+        width: 220px;
+        background-color: #f9f9f9;
+        height: 100vh;
+        padding-top: 20px;
+        border-right: 1px solid #ddd;
+    }
+    .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 12px 20px;
+        color: #333;
+        text-decoration: none;
+        transition: background-color 0.2s;
+    }
+    .sidebar a:hover {
+        background-color: #eaeaea;
+    }
+    .sidebar i {
+        margin-right: 10px;
+    }
+    .layout {
+        display: flex;
+    }
+    .sidebar {
+        width: 220px;
+        background-color: #f9f9f9;
+        height: 100vh;
+        padding-top: 20px;
+        border-right: 1px solid #ddd;
+        flex-shrink: 0;
+        position: sticky;
+        top: 0;
+    }
+    .total {
+        display: flex;
+        gap: 20px;
+        justify-content: space-between;
+        margin: 20px 0 40px 0;
+    }
+
+    .card {
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        padding: 20px;
+        width: 250px;
+        text-align: center;
+    }
+
+    .card .label {
+        font-size: 12px;
+        color: #888;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+
+    .card h2 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    .card .percent {
+        margin-top: 10px;
+        color: green;
+        font-size: 14px;
+    }
+    .tableLeft h1 {
+        margin-bottom: 20px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    th {
+        background-color: #cfe2f3;
+        text-align: left;
+        padding: 12px;
+    }
+
+    td {
+        padding: 12px;
+        border-top: 1px solid #eee;
+    }
+
+    td img {
+        border-radius: 4px;
+    }
+    .tableContainer {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .tableLeft {
+        width: 70%;
+        flex: 2;
+    }
+    .tableRight {
+        width: 30%;
+        margin: 0;
+        flex: 1;
+    }
+    .tableRight h3 {
+        margin-top: 0;
+    }
+    .topCourses {
+        list-style: none;
+        padding: 0;
+    }
+
+    .topCourses li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 10px 0;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .topCourses li img {
+        border-radius: 4px;
+        margin-right: 10px;
+    }
+
+    .topCourses li span {
+        flex: 1;
+        font-size: 14px;
+    }
+
+    .studentCount {
+        color: #666;
+        font-size: 13px;
+    }
+    .main-content {
+        flex-grow: 1;
+        padding: 20px 40px;
+        background-color: #f9f9f9;
+    }
+</style>
+<body>
+<div class="logout-container" th:if="${session.loggedInUser != null}">
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+        </button>
+    </form>
+</div>
+
+<div class="layout">
+    <div class="sidebar">
+        <a href="/admin"><h1>Hi, Admin</h1></a>
+        <a th:href="@{/admin/dashboard}">
+            <i class="fas fa-home"></i> Dashboard
+        </a>
+        <a th:href="@{/admin/students}">
+            <i class="fas fa-users"></i> Students
+        </a>
+        <a th:href="@{/admin/courses}">
+            <i class="fas fa-book-open"></i> Courses
+        </a>
+        <a th:href="@{/admin/enrollments}">
+            <i class="fas fa-user-plus"></i> Enrollments
+        </a>
+    </div>
+    <div class="main-content">
+        <div class="total">
+            <div class="card">
+                <p class="label">TOTAL STUDENT</p>
+                <h2 th:text="${totalStudents}">0</h2>
+                <p class="percent">+36% ↑</p>
+            </div>
+            <div class="card">
+                <p class="label">TOTAL COURSE</p>
+                <h2 th:text="${totalCourses}">0</h2>
+                <p class="percent">+36% ↑</p>
+            </div>
+            <div class="card">
+                <p class="label">TOTAL ENROLLMENT</p>
+                <h2 th:text="${totalEnrollments}">0</h2>
+                <p class="percent">+36% ↑</p>
+            </div>
+        </div>
+
+        <div class="tableContainer">
+            <div class="tableLeft">
+                <h1>Student statistics by course</h1>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Course ID</th>
+                        <th>Image</th>
+                        <th>Course Name</th>
+                        <th>Duration</th>
+                        <th>Total Student</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="stat : ${courseStats}">
+                        <td th:text="${stat.course.id}"></td>
+                        <td>
+                            <img th:src="${stat.course.image}" width="40" />
+                        </td>
+                        <td th:text="${stat.course.name}"></td>
+                        <td th:text="${stat.course.duration}"></td>
+                        <td th:text="${stat.studentCount}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="tableRight">
+                <h3>Top 5 course best</h3>
+                <p>Top 5 courses with the most students</p>
+                <ul class="topCourses">
+                    <li th:each="top : ${topCourses}">
+                        <img th:src="${top.course.image}" width="30" />
+                        <span th:text="${top.course.name}"></span>
+                        <span class="studentCount" th:text="${top.studentCount + ' Student'}"></span>
+                    </li>
+                </ul>
+            </div>
+    </div>
+</div>
+
+</div>
 
 </body>
 </html>

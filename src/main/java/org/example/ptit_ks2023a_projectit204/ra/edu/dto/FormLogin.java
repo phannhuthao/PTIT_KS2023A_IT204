@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 public class FormLogin {
     @NotBlank(message = "Email không được để trống")
-    @Email(message = "Email phải định dạng")
+    @Email(message = "Email phải đúng định dạng")
     private String email;
 
     @NotBlank(message = "Mật khẩu không được để trống")

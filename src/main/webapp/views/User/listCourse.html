@@ -5,6 +5,32 @@
     <link rel="stylesheet" th:href="@{/css/header.css}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <style>
+        .search-input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+            width: 250px;
+        }
+
+        .search-btn {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .search-btn:hover {
+            background-color: #2563eb;
+        }
+
         .course-card {
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -18,31 +44,6 @@
             height: 120px;
             object-fit: contain;
             background-color: #f9f9f9;
-        }
-        .alert {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-            padding: 20px 30px;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-danger {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
         }
         .btn-register {
             background-color: #228B22;
@@ -68,7 +69,6 @@
             flex-wrap: wrap;
             gap: 6px;
         }
-
         .pagination-container a,
         .pagination-container .dots {
             padding: 8px 12px;
@@ -108,31 +108,39 @@
             border: none;
             background: transparent;
         }
-        /*.center-message {*/
-        /*    display: flex;*/
-        /*    justify-content: center;*/
-        /*    align-items: center;*/
-        /*    height: 100vh;*/
-        /*}*/
+        .alert {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            padding: 20px 30px;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
     </style>
 </head>
 <body>
 <div th:replace="fragments/header :: header"></div>
-
 <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
-<!--<div class="center-message">-->
-<!--    <div th:if="${errorMessage}" class="alert alert-danger text-center" th:text="${errorMessage}"></div>-->
-<!--</div>-->
-
 
 <h1 style="text-align: center; color: goldenrod;">List Course</h1>
 
-<form method="get" action="/listCourse" style="text-align: center; margin-bottom: 20px;">
-    <input type="text" name="search" placeholder="search course by name"
-           th:value="${search}" />
-    <button type="submit">Search</button>
+<form method="get" action="/listCourse" style="margin: 20px; display: flex; justify-content: flex-end; gap: 8px;">
+    <input type="text" name="search" placeholder="Search course by name"
+           th:value="${search}" class="search-input" />
+    <button type="submit" class="search-btn">
+        <i class="fas fa-search"></i> Search
+    </button>
 </form>
-
 
 <div style="display: flex; flex-wrap: wrap; justify-content: center;">
     <div class="course-card" th:each="course : ${courses}">
@@ -149,16 +157,22 @@
     </div>
 </div>
 
+<!-- Nếu tổng số trang lớn hơn 1 thì mới hiển thị thanh phân trang -->
 <div th:if="${totalPages > 1}" class="pagination-container" style="text-align: center; margin-top: 20px;">
+    <!-- Nút "←" để chuyển sang trang trước. Bị vô hiệu hóa (disabled) nếu đang ở trang đầu tiên (currentPage == 0) -->
     <a th:href="@{/listCourse(page=${currentPage - 1}, size=5, search=${search})}"
        th:classappend="${currentPage == 0} ? 'disabled' : ''">←</a>
 
+    <!-- Lặp qua danh sách các chỉ số trang để hiển thị nút số trang -->
+    <!-- Hiển thị trang khi: là 2 trang đầu (i < 3), trang cuối (i >= totalPages - 1),
+         hoặc trang nằm gần trang hiện tại (trong khoảng currentPage - 1 đến currentPage + 1) -->
     <a th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
        th:if="${i < 3 || i >= totalPages - 1 || (i >= currentPage - 1 && i <= currentPage + 1)}"
        th:href="@{/listCourse(page=${i}, size=5, search=${search})}"
        th:text="${i + 1}"
        th:classappend="${i == currentPage} ? 'active' : ''"></a>
 
+    <!-- Nút "→" để chuyển sang trang kế tiếp. Bị vô hiệu hóa nếu đang ở trang cuối -->
     <a th:href="@{/listCourse(page=${currentPage + 1}, size=5, search=${search})}"
        th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">→</a>
 </div>

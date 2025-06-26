@@ -2,7 +2,7 @@ package org.example.ptit_ks2023a_projectit204.ra.edu.controller;
 
 import org.example.ptit_ks2023a_projectit204.ra.edu.dto.FormLogin;
 import org.example.ptit_ks2023a_projectit204.ra.edu.entity.Students;
-import org.example.ptit_ks2023a_projectit204.ra.edu.service.AuthService;
+import org.example.ptit_ks2023a_projectit204.ra.edu.service.serviceImpl.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,13 +27,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public String actionLogin(@Valid @ModelAttribute("student") FormLogin formLogin,
+    public String actionLogin(@Valid @ModelAttribute("formLogin") FormLogin formLogin,
                               BindingResult result,
                               Model model,
                               HttpSession session) {
         if (result.hasErrors()) {
-            model.addAttribute("student", formLogin);
-            return "redirect:/login";
+            model.addAttribute("formLogin", formLogin);
+            return "Auth/login";
         }
 
         Students loggedInStudent = authService.login(formLogin.getEmail(), formLogin.getPassword());
@@ -86,10 +86,20 @@ public class AuthController {
     }
 
     @GetMapping("/admin")
-    public String showAdmin(Model model) {
-        model.addAttribute("student", new Students());
+    public String showAdmin(Model model, HttpSession session) {
+        Students loggedInUser = (Students) session.getAttribute("loggedInUser");
+
+        // Nếu chưa đăng nhập hoặc không phải admin
+        if (loggedInUser == null || !loggedInUser.isRole()) {
+            model.addAttribute("error", "Bạn cần phải đăng nhập tài khoản admin mới được vào");
+            model.addAttribute("formLogin", new FormLogin());
+            return "Auth/login";
+        }
+
+        model.addAttribute("student", loggedInUser);
         return "Admin/admin";
     }
+
 
     @GetMapping("/home")
     public String showHome(Model model) {

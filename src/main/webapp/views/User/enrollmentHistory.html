@@ -6,55 +6,113 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <style>
+    h1 {
+        text-align: center;
+        color: #f5b301;
+        font-size: 42px;
+        margin-bottom: 30px;
+        font-weight: 700;
+    }
     table {
         width: 100%;
         border-collapse: collapse;
         background-color: white;
-        border-radius: 12px;
+        border-radius: 15px;
         overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
-
     th, td {
-        padding: 12px 10px;
+        padding: 16px;
         text-align: center;
-        font-size: 14px;
+        font-size: 15px;
         border-bottom: 1px solid #eee;
     }
-
     th {
         background-color: #fafafa;
-        color: #333;
+        color: #444;
         font-weight: 600;
     }
-
     img {
-        width: 100px;
-        border-radius: 4px;
+        width: 70px;
+        border-radius: 8px;
+        object-fit: cover;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
     .status-waiting {
-        color: goldenrod;
+        color: #f5b301;
         font-weight: bold;
     }
-
     .status-confirm {
-        color: green;
+        color: #26b66b;
         font-weight: bold;
     }
-    .status-cancel {
-        color: red;
-        font-weight: bold;
-    }
+    .status-cancel,
     .status-denied {
-        color: red;
+        color: #e74c3c;
         font-weight: bold;
+    }
+    button[type="submit"] {
+        background-color: rgba(255, 165, 0, 0.1);
+        border: 1px solid #ffc107;
+        color: #ff9800;
+        padding: 6px 14px;
+        font-size: 13px;
+        border-radius: 6px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease-in-out;
+    }
+    button[type="submit"]:hover {
+        background-color: #ff9800;
+        color: white;
+    }
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+    }
+    .filters {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    select, input[type="search"] {
+        padding: 8px 12px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 14px;
+        background-color: #fff;
+    }
+    button.search-btn {
+        padding: 8px 16px;
+        background-color: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 500;
     }
 </style>
-
 <body>
 <div th:replace="fragments/header :: header"></div>
 
+<h1 style="text-align: center; color: goldenrod;">Enrollment History</h1>
 
-<h1 style="text-align: center; color: goldenrod;">List Course</h1>
+<div class="actions">
+    <form th:action="@{/enrollment/search}" method="get" class="filters">
+        <select name="statusOrder">
+            <option value="">Sort by Status</option>
+            <option value="WAITING" th:selected="${param.statusOrder == 'WAITING'}">WAITING</option>
+            <option value="CONFIRM" th:selected="${param.statusOrder == 'CONFIRM'}">CONFIRM</option>
+            <option value="DENIED" th:selected="${param.statusOrder == 'DENIED'}">DENIED</option>
+        </select>
+
+        <input type="search" name="name" placeholder="Search course by name">
+        <button type="submit" class="search-btn">Search</button>
+    </form>
+</div>
 
 <table>
     <thead>
@@ -92,7 +150,6 @@
         </td>
     </tr>
     </tbody>
-
 </table>
 </body>
 </html>
